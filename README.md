@@ -16,3 +16,5 @@ Este directorio contiene todo el código de base que se entrega para el funciona
 -Test
 Este directorio contiene las pruebas realizadas a los TADs, Estructuras de Datos y Algoritmos.
 
+Requerimiento 3: Santiago Arciniegas Castro - 202014994
+Requerimiento 2: María Camila Luna Velasco - 201920993
