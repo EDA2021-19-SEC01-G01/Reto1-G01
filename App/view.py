@@ -37,6 +37,7 @@ operación solicitada
 def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
+    print("2- Ordenar los videos por likes, categoría y país")
     print("0- Salir")
 
 catalog = None
@@ -71,9 +72,20 @@ while True:
         print("Cargando información de los archivos ....")
         catalog = initCatalog(tipoLista)
         loadData(catalog)
-        print ("Total de registros de videos cargados: " + str(lt.size(catalog['videos'])))
+        size = lt.size(catalog['videos'])
+        print ("Total de registros de videos cargados: " + str(size))
         print ("Información primer video: ", lt.firstElement(catalog['videos']))
         print ("Categorías cargadas: ", (catalog['categorias']))
+
+    elif int(inputs[0]) == 2:
+        correcto = False
+        while correcto == False:
+            tamano = input("Indique tamaño de la muestra: ")
+            if tamano < size:
+                correcto = True
+            else:
+                print('No es una opción válida :)\n')      
+        result = controller.sortVideos(catalog, int(tamano), ordAlg)
 
     else:
         sys.exit(0)

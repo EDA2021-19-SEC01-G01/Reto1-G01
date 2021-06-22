@@ -60,5 +60,9 @@ def loadCategories(catalog):
         model.addCategory(catalog, linea)
 
 # Funciones de ordenamiento
-
+def sortVideos(catalog, size,ordAlg):
+    """
+    Ordena los Videos por likes
+    """
+    return model.sortVideos(catalog, size,ordAlg)
 # Funciones de consulta sobre el catálogo

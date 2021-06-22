@@ -28,7 +28,10 @@
 import config as cf
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as sa
+from DISClib.Algorithms.Sorting import insertionsort as ins
+from DISClib.Algorithms.Sorting import selectionsort as sls
 assert cf
+import time
 
 """
 Se define la estructura de un catálogo de videos. El catálogo tendrá dos listas, una para los videos, otra para las categorias de
@@ -61,5 +64,26 @@ def addVideo(catalog, video):
 # Funciones de consulta
 
 # Funciones utilizadas para comparar elementos dentro de una lista
+def cmpVideosByLikes(video1, video2):
+    """
+    Devuelve verdadero (True) si los likes de video1 son menores que los del video2
+    Args:
+    video1: informacion del primer video que incluye su valor 'likes'
+    video2: informacion del segundo video que incluye su valor 'likes'
+    """
+    return (int(video1['likes']) > int(video2['likes']))
+
 
 # Funciones de ordenamiento
+def comoOrdenar (sub_list, cmpVideosByLikes,ordAlg):
+    if ordAlg == 1:
+        return sa.sort(sub_list, cmpVideosByLikes)
+
+def sortVideos(catalog, size, ordAlg):
+    sub_list = lt.subList(catalog['videos'], 0, size)
+    sub_list = sub_list.copy()
+    start_time = time.process_time()
+    sorted_list = comoOrdenar(sub_list, cmpVideosByLikes,ordAlg)
+    stop_time = time.process_time()
+    elapsed_time_mseg = (stop_time - start_time)*1000
+    return elapsed_time_mseg, sorted_list
