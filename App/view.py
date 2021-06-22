@@ -37,9 +37,6 @@ operación solicitada
 def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
-    print("2- Imprimir categorías")
-    print("3- Número de videos cargados")
-    print("4- Ver información primer video cargado")
     print("0- Salir")
 
 catalog = None
@@ -48,8 +45,8 @@ catalog = None
 Menu principal
 """
 
-def initCatalog():
-    return controller.initCatalog()
+def initCatalog(tipo):
+    return controller.initCatalog(tipo)
 
 
 def loadData(catalog):
@@ -59,18 +56,24 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
+        correcto = False
+        while correcto == False:
+            print('Seleccione el tipo de representación de la lista: \n1- ArrayList\n2- LinkedList')
+            tipoLista = int(input('Ingrese 1 o 2\n'))
+            if tipoLista == 1:
+                tipoLista = 'ARRAY_LIST'
+                correcto = True
+            elif tipoLista == 2:
+                tipoLista = 'SINGLE_LINKED'
+                correcto = True
+            else:
+                print('No es una opción válida :)\n')
         print("Cargando información de los archivos ....")
-        catalog = initCatalog()
+        catalog = initCatalog(tipoLista)
         loadData(catalog)
-
-    elif int(inputs[0]) == 2:
-        print ("Categorías cargadas: ", (catalog['categorias']))
-    
-    elif int(inputs[0]) == 3:
         print ("Total de registros de videos cargados: " + str(lt.size(catalog['videos'])))
-
-    #elif int(inputs[0]) == 4:
-    #    print ("Información primer video: ", (catalog['videos'])[1])
+        print ("Información primer video: ", lt.firstElement(catalog['videos']))
+        print ("Categorías cargadas: ", (catalog['categorias']))
 
     else:
         sys.exit(0)
