@@ -90,4 +90,4 @@ def sortVideos(catalog, size, ordAlg):
     sorted_list = comoOrdenar(sub_list, cmpVideosByLikes,ordAlg)
     stop_time = time.process_time()
     elapsed_time_mseg = (stop_time - start_time)*1000
-    return elapsed_time_mseg, sorted_list
+    return elapsed_time_mseg

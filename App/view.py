@@ -80,7 +80,7 @@ while True:
     elif int(inputs[0]) == 2:
         correcto = False
         while correcto == False:
-            tamano = input("Indique tamaño de la muestra: ")
+            tamano = int(input("Indique tamaño de la muestra: "))
             if tamano < size:
                 correcto = True
             else:
@@ -94,7 +94,7 @@ while True:
             else:
                 centinela=True
         result = controller.sortVideos(catalog, int(tamano), ordAlg)
-
+        print(result)
     else:
         sys.exit(0)
 sys.exit(0)
