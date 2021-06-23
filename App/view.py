@@ -81,7 +81,7 @@ while True:
         correcto = False
         while correcto == False:
             tamano = int(input("Indique tamaño de la muestra: "))
-            if tamano < size:
+            if tamano <= size:
                 correcto = True
             else:
                 print('No es una opción válida :)\n')
