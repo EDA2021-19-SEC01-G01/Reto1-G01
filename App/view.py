@@ -84,7 +84,15 @@ while True:
             if tamano < size:
                 correcto = True
             else:
-                print('No es una opción válida :)\n')      
+                print('No es una opción válida :)\n')
+        centinela=False
+        while centinela==False:
+            print('Seleccione el tipo de representación de la lista: \n1- ShellSort\n2- InsertionSort\n3- SelectionSort ')
+            ordAlg = int(input('Ingrese 1, 2 o 3\n'))
+            if (ordAlg in (1,2,3))==False:
+                print('No es una opción válida :)\n')
+            else:
+                centinela=True
         result = controller.sortVideos(catalog, int(tamano), ordAlg)
 
     else:

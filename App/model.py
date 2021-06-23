@@ -78,6 +78,10 @@ def cmpVideosByLikes(video1, video2):
 def comoOrdenar (sub_list, cmpVideosByLikes,ordAlg):
     if ordAlg == 1:
         return sa.sort(sub_list, cmpVideosByLikes)
+    elif ordAlg == 2:
+        return ins.sort(sub_list, cmpVideosByLikes)
+    elif ordAlg == 3:
+        return sls.sort(sub_list, cmpVideosByLikes)
 
 def sortVideos(catalog, size, ordAlg):
     sub_list = lt.subList(catalog['videos'], 0, size)
