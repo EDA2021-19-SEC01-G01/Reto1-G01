@@ -18,3 +18,5 @@ Este directorio contiene las pruebas realizadas a los TADs, Estructuras de Datos
 
 Requerimiento 3: Santiago Arciniegas Castro - 202014994
 Requerimiento 2: María Camila Luna Velasco - 201920993
+
+:) Gracias por su atención
