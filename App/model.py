@@ -30,6 +30,9 @@ from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as sa
 from DISClib.Algorithms.Sorting import insertionsort as ins
 from DISClib.Algorithms.Sorting import selectionsort as sls
+from DISClib.Algorithms.Sorting import quicksort as qck
+from DISClib.Algorithms.Sorting import mergesort as mrg
+
 assert cf
 import time
 
@@ -82,6 +85,10 @@ def comoOrdenar (sub_list, cmpVideosByLikes,ordAlg):
         return ins.sort(sub_list, cmpVideosByLikes)
     elif ordAlg == 3:
         return sls.sort(sub_list, cmpVideosByLikes)
+    elif ordAlg == 4:
+        return mrg.sort(sub_list, cmpVideosByLikes)
+    elif ordAlg == 5:
+        return qck.sort(sub_list, cmpVideosByLikes)
 
 def sortVideos(catalog, size, ordAlg):
     sub_list = lt.subList(catalog['videos'], 0, size)
