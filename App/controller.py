@@ -47,7 +47,7 @@ def loadData(catalog):
 
 def loadVideos(catalog):
     
-    booksfile = cf.data_dir + 'videos-large.csv'
+    booksfile = cf.data_dir + 'videos-small.csv'
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'),delimiter=',')
     for video in input_file:
         model.addVideo(catalog, video)
@@ -66,3 +66,9 @@ def sortVideos(catalog, size,ordAlg):
     """
     return model.sortVideos(catalog, size,ordAlg)
 # Funciones de consulta sobre el catálogo
+def showCat(catalog):
+    rta = model.showCat(catalog)
+    return rta
+
+def req1(catalog, country, category,n):
+    return model.req1(catalog, country, category,n)

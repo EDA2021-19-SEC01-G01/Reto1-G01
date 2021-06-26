@@ -40,6 +40,7 @@ def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
     print("2- Ordenar los videos por likes, categoría y país")
+    print("3- Requerimiento 1")
     print("0- Salir")
 
 catalog = None
@@ -58,7 +59,7 @@ def loadData(catalog):
 while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
-    if int(inputs[0]) == 1:
+    if int(inputs) == 1:
         correcto = False
         while correcto == False:
             print('Seleccione el tipo de representación de la lista: \n1- ArrayList\n2- LinkedList')
@@ -77,9 +78,9 @@ while True:
         size = lt.size(catalog['videos'])
         print ("Total de registros de videos cargados: " + str(size))
         print ("Información primer video: ", lt.firstElement(catalog['videos']))
-        print ("Categorías cargadas: ", (catalog['categorias']))
+        #print ("Categorías cargadas: ", controller.showCat(catalog))
 
-    elif int(inputs[0]) == 2:
+    elif int(inputs) == 2:
         correcto = False
         while correcto == False:
             tamano = int(input("Indique tamaño de la muestra: "))
@@ -97,6 +98,13 @@ while True:
                 centinela=True
         result = controller.sortVideos(catalog, int(tamano), ordAlg)
         print(result)
+
+    elif int(inputs) == 3:
+        categoria = input("Ingrese la categoría a buscar: ")
+        pais = input("Ingrese el filtro de país: ")
+        n = int(input("Ingrese la cantidad de videos que quiere listar: "))
+        print (controller.req1(catalog, pais, categoria,n))
+
     else:
         sys.exit(0)
 sys.exit(0)
