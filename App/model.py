@@ -66,14 +66,6 @@ def addVideo(catalog, video):
 
 # Funciones de consulta
 
-def showCat(catalog):
-    categorias = lt.newList("ARRAY_LIST")
-    i = lt.iterator(catalog['categorias'])
-    while i != None:
-        elemento = i
-        lt.addLast(categorias, elemento)
-    return categorias
-
 # Funciones utilizadas para comparar elementos dentro de una lista
 def cmpVideosByLikes(video1, video2):
     """
