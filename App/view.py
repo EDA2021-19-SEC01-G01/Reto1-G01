@@ -78,7 +78,7 @@ while True:
         size = lt.size(catalog['videos'])
         print ("Total de registros de videos cargados: " + str(size))
         print ("Información primer video: ", lt.firstElement(catalog['videos']))
-        #print ("Categorías cargadas: ", controller.showCat(catalog))
+        print ("Categorías cargadas: ", catalog['categorias'])
 
     elif int(inputs) == 2:
         correcto = False

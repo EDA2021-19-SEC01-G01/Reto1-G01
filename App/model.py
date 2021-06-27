@@ -125,11 +125,17 @@ def filtroCategory(catalog, category, lista):
 
 
 def filtroPais(catalog, country):
-    soloCountry = lt.newList("ArrayList")
-    print((catalog['videos']['elements']))
-    for i in catalog['videos']['elements']:
-        if i['country'] == country and (i in soloCountry) == False:
-            lt.addLast(soloCountry, i)
+    soloCountry = lt.newList("ARRAY_LIST")
+    ids = []
+    vid = catalog['videos']
+    for i in range(1,lt.size(vid)+1):
+        ele = lt.getElement(vid,i)
+        c1 = ele['country']
+        id1 = ele['video_id']
+        if c1 == country and (id1 in ids) == False:
+            lt.addLast(soloCountry, ele)
+            ids.append(id1)
+
     return soloCountry
 
 def req1(catalog, country, category,n):
