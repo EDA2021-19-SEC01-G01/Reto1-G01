@@ -65,6 +65,15 @@ def addVideo(catalog, video):
 
 # Funciones para creacion de datos
 
+def printCategories(catalog):
+    categorias = catalog['categorias']
+    listaNombres = []
+    for llave in range(1,lt.size(categorias)+1):
+        line = lt.getElement(categorias,llave)
+        nombre = line['name']
+        listaNombres.append(nombre)
+    return listaNombres
+
 # Funciones de consulta
 
 # Funciones utilizadas para comparar elementos dentro de una lista
@@ -92,7 +101,7 @@ def comoOrdenar (sub_list, cmpVideosByLikes,ordAlg):
         return qck.sort(sub_list, cmpVideosByLikes)
 
 def sortVideos(catalog, size, ordAlg):
-    sub_list = lt.subList(catalog['videos'], 0, size)
+    sub_list = lt.subList(catalog['videos'], 1, size)
     sub_list = sub_list.copy()
     start_time = time.process_time()
     sorted_list = comoOrdenar(sub_list, cmpVideosByLikes,ordAlg)
@@ -102,7 +111,7 @@ def sortVideos(catalog, size, ordAlg):
 
 def sortVideos2(listaFinal, ordAlg, n):
     sorted_list = comoOrdenar(listaFinal, cmpVideosByLikes,ordAlg)
-    subList = lt.subList(sorted_list,0,n)
+    subList = lt.subList(sorted_list,1,n)
     return subList
 
 def filtroCategory(catalog, category, lista):
@@ -110,7 +119,7 @@ def filtroCategory(catalog, category, lista):
     listaFinal = lt.newList("ARRAY_LIST")
     for llave in range(1,lt.size(categorias)+1):
         line = lt.getElement(categorias,llave)
-        if (line['name']) == category:
+        if category in (line['name']):
             id = line['id']
     for i in range(1,lt.size(lista)+1):
         video = lt.getElement(lista,i)
