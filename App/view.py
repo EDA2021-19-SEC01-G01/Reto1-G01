@@ -100,7 +100,7 @@ while True:
         print(result)
 
     elif int(inputs) == 3:
-        categoria = input("Ingrese la categoría a buscar: ")
+        categoria = ' '+ input("Ingrese la categoría a buscar: ")
         pais = input("Ingrese el filtro de país: ")
         n = int(input("Ingrese la cantidad de videos que quiere listar: "))
         print (controller.req1(catalog, pais, categoria,n))

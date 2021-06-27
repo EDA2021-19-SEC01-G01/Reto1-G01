@@ -25,6 +25,7 @@
  """
 
 
+from DISClib.DataStructures.arraylist import getElement
 import config as cf
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as sa
@@ -107,12 +108,14 @@ def sortVideos2(listaFinal, ordAlg, n):
 def filtroCategory(catalog, category, lista):
     categorias = catalog['categorias']
     listaFinal = lt.newList("ARRAY_LIST")
-    for llave in categorias.keys():
-        if categorias[llave] == category:
-            id = llave
-    for i in lista:
-        if i['category_id'] == id:
-            lt.addLast(listaFinal, i)
+    for llave in range(1,lt.size(categorias)+1):
+        line = lt.getElement(categorias,llave)
+        if (line['name']) == category:
+            id = line['id']
+    for i in range(1,lt.size(lista)+1):
+        video = lt.getElement(lista,i)
+        if video['category_id'] == id:
+            lt.addLast(listaFinal, video)
     return listaFinal
 
 
@@ -140,10 +143,11 @@ def req1(catalog, country, category,n):
 
 def printReq1(lista):
     listaFinalFinal = lt.newList('ARRAY_LIST')
-    criterios = ['trending_date','title','cannel_title','publish_time','views','likes','dislikes']
-    for j in lista['elements']:
+    criterios = ['trending_date','title','channel_title','publish_time','views','likes','dislikes']
+    for j in range(1,lt.size(lista)+1):
         listaPorVideo = lt.newList('ARRAY_LIST')
         for crit in criterios:
-            lt.addLast(listaPorVideo,j[crit])
+            video = lt.getElement(lista,j)
+            lt.addLast(listaPorVideo,video[crit])
         lt.addLast(listaFinalFinal,listaPorVideo)
     return listaFinalFinal
