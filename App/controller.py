@@ -55,7 +55,7 @@ def loadVideos(catalog):
 def loadCategories(catalog):
     
     categoriesfile = cf.data_dir + 'category-id.csv'
-    input_file = csv.DictReader(open(categoriesfile, encoding='utf-8'),delimiter='\t')
+    input_file = csv.DictReader(open(categoriesfile, encoding='utf-8'), delimiter="\t")
     for linea in input_file:
         model.addCategory(catalog, linea)
 
@@ -72,3 +72,6 @@ def showCat(catalog):
 
 def req1(catalog, country, category,n):
     return model.req1(catalog, country, category,n)
+
+def printCategories(catalog):
+    return model.printCategories(catalog)

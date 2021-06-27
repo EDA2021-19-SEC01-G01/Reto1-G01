@@ -79,7 +79,7 @@ while True:
         size = lt.size(catalog['videos'])
         print ("Total de registros de videos cargados: " + str(size))
         print ("Información primer video: ", lt.firstElement(catalog['videos']))
-        print ("Categorías cargadas: ", catalog['categorias'])
+        print ("Categorías cargadas: ", controller.printCategories(catalog))
 
     elif int(inputs) == 2:
         correcto = False
@@ -101,12 +101,13 @@ while True:
         print(result)
 
     elif int(inputs) == 3:
-        categoria = input("Ingrese la categoría a buscar: ")
+        categoria = ' '+ input("Ingrese la categoría a buscar: ")
         pais = input("Ingrese el filtro de país: ")
         n = int(input("Ingrese la cantidad de videos que quiere listar: "))
-        print (controller.req1(catalog, pais, categoria,n))
-    elif int(inputs)==4:
-        pais = input("Ingrese el filtro de país: ")
+        rtas = controller.req1(catalog, pais, categoria,n)
+        for i in range(1, n+1):
+            top = (lt.getElement(rtas,i))['elements']
+            print(top)
 
     else:
         sys.exit(0)
