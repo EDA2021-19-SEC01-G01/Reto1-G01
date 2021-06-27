@@ -66,14 +66,6 @@ def addVideo(catalog, video):
 
 # Funciones de consulta
 
-def showCat(catalog):
-    categorias = lt.newList("ARRAY_LIST")
-    i = lt.iterator(catalog['categorias'])
-    while i != None:
-        elemento = i
-        lt.addLast(categorias, elemento)
-    return categorias
-
 # Funciones utilizadas para comparar elementos dentro de una lista
 def cmpVideosByLikes(video1, video2):
     """
@@ -106,46 +98,4 @@ def sortVideos(catalog, size, ordAlg):
     stop_time = time.process_time()
     elapsed_time_mseg = (stop_time - start_time)*1000
     return elapsed_time_mseg
-
-def sortVideos2(listaFinal, ordAlg, n):
-    sorted_list = comoOrdenar(listaFinal, cmpVideosByLikes,ordAlg)
-    subList = lt.subList(sorted_list,0,n)
-    return subList
-
-def filtroCategory(catalog, category, lista):
-    categorias = catalog['categorias']
-    listaFinal = lt.newList("ARRAY_LIST")
-    for llave in categorias.keys():
-        if categorias[llave] == category:
-            id = llave
-    for i in lista:
-        if i['category_id'] == id:
-            lt.addLast(listaFinal, i)
-    return listaFinal
-
-
-def filtroPais(catalog, country):
-    soloCountry = lt.newList("ArrayList")
-    print((catalog['videos']['elements']))
-    for i in catalog['videos']['elements']:
-        if i['country'] == country and (i in soloCountry) == False:
-            lt.addLast(soloCountry, i)
-    return soloCountry
-
-def req1(catalog, country, category,n):
-    "Agrupa todas las funciones que desarrollan el requerimiento 1"
-    listaPais = filtroPais(catalog,country)
-    listaOrdenar = filtroCategory(catalog,category, listaPais)
-    listaLista = sortVideos2(listaOrdenar, 4,n)
-    listaImprimir = printReq1(listaLista)
-    return listaImprimir
-
-def printReq1(lista):
-    listaFinalFinal = lt.newList('ARRAY_LIST')
-    criterios = ['trending_date','title','cannel_title','publish_time','views','likes','dislikes']
-    for j in lista['elements']:
-        listaPorVideo = lt.newList('ARRAY_LIST')
-        for crit in criterios:
-            lt.addLast(listaPorVideo,j[crit])
-        lt.addLast(listaFinalFinal,listaPorVideo)
-    return listaFinalFinal
+    
