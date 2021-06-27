@@ -147,3 +147,6 @@ def printReq1(lista):
             lt.addLast(listaPorVideo,j[crit])
         lt.addLast(listaFinalFinal,listaPorVideo)
     return listaFinalFinal
+
+
+

@@ -41,6 +41,7 @@ def printMenu():
     print("1- Cargar información en el catálogo")
     print("2- Ordenar los videos por likes, categoría y país")
     print("3- Requerimiento 1")
+    print("4- Requerimiento 2")
     print("0- Salir")
 
 catalog = None
@@ -104,6 +105,8 @@ while True:
         pais = input("Ingrese el filtro de país: ")
         n = int(input("Ingrese la cantidad de videos que quiere listar: "))
         print (controller.req1(catalog, pais, categoria,n))
+    elif int(inputs)==4:
+        pais = input("Ingrese el filtro de país: ")
 
     else:
         sys.exit(0)
