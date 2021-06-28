@@ -138,8 +138,11 @@ def sortVideos2(listaFinal, ordAlg, n):
 
 def sortVideos3 (listaFinal,ordAlg):
     sortedList=comoOrdenar2(listaFinal,cmpVideosByTrend,ordAlg)
-    top_trend=lt.firstElement(sortedList)
-    return top_trend
+    if lt.size(sortedList) == 0:
+        return "No hay ningún video con ese ratio de likes/dislikes"
+    else:
+        top_trend=lt.firstElement(sortedList)
+        return top_trend
 
 def filtroCategory(catalog, category, lista):
     categorias = catalog['categorias']
