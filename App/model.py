@@ -86,6 +86,16 @@ def cmpVideosByLikes(video1, video2):
     """
     return (int(video1['likes']) > int(video2['likes']))
 
+def cmpVideosByTrend(video1, video2):
+    """
+    Devuelve verdadero (True) si los likes de video1 son menores que los del video2
+    Args:
+    video1: informacion del primer video que incluye su valor 'likes'
+    video2: informacion del segundo video que incluye su valor 'likes'
+    """
+    rta=(lt.lastElement(video1))> (lt.lastElement(video2))
+    return rta
+
 
 # Funciones de ordenamiento
 def comoOrdenar (sub_list, cmpVideosByLikes,ordAlg):
@@ -100,6 +110,18 @@ def comoOrdenar (sub_list, cmpVideosByLikes,ordAlg):
     elif ordAlg == 5:
         return qck.sort(sub_list, cmpVideosByLikes)
 
+def comoOrdenar2 (sub_list, cmpVideosByLikes,ordAlg):
+    if ordAlg == 1:
+        return sa.sort(sub_list, cmpVideosByTrend)
+    elif ordAlg == 2:
+        return ins.sort(sub_list, cmpVideosByTrend)
+    elif ordAlg == 3:
+        return sls.sort(sub_list, cmpVideosByTrend)
+    elif ordAlg == 4:
+        return mrg.sort(sub_list, cmpVideosByTrend)
+    elif ordAlg == 5:
+        return qck.sort(sub_list, cmpVideosByTrend)
+
 def sortVideos(catalog, size, ordAlg):
     sub_list = lt.subList(catalog['videos'], 1, size)
     sub_list = sub_list.copy()
@@ -113,6 +135,11 @@ def sortVideos2(listaFinal, ordAlg, n):
     sorted_list = comoOrdenar(listaFinal, cmpVideosByLikes,ordAlg)
     subList = lt.subList(sorted_list,1,n)
     return subList
+
+def sortVideos3 (listaFinal,ordAlg):
+    sortedList=comoOrdenar2(listaFinal,cmpVideosByTrend,ordAlg)
+    top_trend=lt.firstElement(sortedList)
+    return top_trend
 
 def filtroCategory(catalog, category, lista):
     categorias = catalog['categorias']
@@ -160,6 +187,82 @@ def printReq1(lista):
             lt.addLast(listaPorVideo,video[crit])
         lt.addLast(listaFinalFinal,listaPorVideo)
     return listaFinalFinal
+
+def filtroPaiscompleto(catalog, country):
+    soloCountry = lt.newList("ARRAY_LIST")
+    ids = []
+    vid = catalog['videos']
+    for i in range(1,lt.size(vid)+1):
+        ele = lt.getElement(vid,i)
+        c1 = ele['country']
+        id1 = ele['video_id']
+        if c1 == country:
+            lt.addLast(soloCountry, ele)
+            ids.append(id1)
+
+    return soloCountry
+
+def ratioLikesDislikes (lista):
+    #Calcula los vídeos con un rating mayor a 10.
+    for j in range(1,lt.size(lista)+1):
+        ele=lt.getElement(lista,j)
+        vid_id=ele['video_id']
+        likes=int(ele["likes"])
+        dislikes=int(ele["dislikes"])
+        dict_id={}
+        if vid_id not in dict_id:
+            count=0 
+            dict_id[vid_id]=[likes,dislikes,count+1]
+        else:
+                dict_id[vid_id][0]=likes
+                dict_id[vid_id][1]=dislikes
+                dict_id[vid_id][2]+=1
+
+    for i in dict_id:
+        
+        lista_id_top=[]
+        if dict_id[i][1]==0 and dict_id[i][0]>0:
+            lista_id_top.append([dict_id[i],ratio,dict_id[i][2]])
+        else:
+            ratio=dict_id[i]/dict_id[i][1]
+            if ratio>10:
+                lista_id_top.append([dict_id[i],ratio,dict_id[i][2]])
+    return lista_id_top
+
+def printReq2(lista,listatop):                 
+    lista_final=lt.newList(datastructure="ARRAY_LIST")
+    criterios=["country","channel_title","title"]
+    for j in listatop:
+        id=j[0]
+        ratio=j[1]
+        trendTotal=j[2]
+        ids=[]
+        listaPorVideo=lt.newList()
+        lt.addLast(listaPorVideo,ratio)
+        lt.addLast(listaPorVideo,trendTotal)
+        for i in range(1,lt.size(lista)+1):
+            ele=lt.getElement(lista,j)
+            vid_id=ele['video_id']
+            for crit in criterios:
+                if id == vid_id and (id in ids) == False:
+                    ids.append(id)
+                    lt.addFirst(listaPorVideo,ele[crit])
+            lt.addLast(lista_final,listaPorVideo)
+    return lista_final
+
+def req2 (catalog,country):
+        "Agrupa todas las funciones que desarrollan el requerimiento 1"
+        listaPais = filtroPais(catalog,country)
+        listaRating = ratioLikesDislikes(listaPais)
+        listaTop=printReq2(listaPais,listaRating)
+        listaImprimir =sortVideos3(listaTop, 4)
+        return listaImprimir
+                    
+ 
+
+
+        
+            
 
 
 

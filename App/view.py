@@ -108,7 +108,10 @@ while True:
         for i in range(1, n+1):
             top = (lt.getElement(rtas,i))['elements']
             print(top)
-
+    elif int(inputs)==4:
+        pais = input("Ingrese el filtro de país: ")
+        rta= controller.req2(catalog,pais)
+        print(rta)
     else:
         sys.exit(0)
 sys.exit(0)

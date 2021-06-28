@@ -47,7 +47,7 @@ def loadData(catalog):
 
 def loadVideos(catalog):
     
-    booksfile = cf.data_dir + 'videos-small.csv'
+    booksfile = cf.data_dir + 'videos-large.csv'
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'),delimiter=',')
     for video in input_file:
         model.addVideo(catalog, video)
@@ -55,7 +55,7 @@ def loadVideos(catalog):
 def loadCategories(catalog):
     
     categoriesfile = cf.data_dir + 'category-id.csv'
-    input_file = csv.DictReader(open(categoriesfile, encoding='utf-8'), delimiter="\t")
+    input_file = csv.DictReader(open(categoriesfile, encoding='utf-8'),delimiter='\t')
     for linea in input_file:
         model.addCategory(catalog, linea)
 
@@ -75,3 +75,6 @@ def req1(catalog, country, category,n):
 
 def printCategories(catalog):
     return model.printCategories(catalog)
+
+def req2(catalog,country):
+    return model.req2(catalog,country)
