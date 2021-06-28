@@ -241,7 +241,7 @@ def printReq2(lista,listatop):
         lt.addLast(listaPorVideo,ratio)
         lt.addLast(listaPorVideo,trendTotal)
         for i in range(1,lt.size(lista)+1):
-            ele=lt.getElement(lista,j)
+            ele=lt.getElement(lista,i)
             vid_id=ele['video_id']
             for crit in criterios:
                 if id == vid_id and (id in ids) == False:
