@@ -257,7 +257,9 @@ def req2 (catalog,country):
         listaTop=printReq2(listaPais,listaRating)
         listaImprimir =sortVideos3(listaTop, 4)
         return listaImprimir
-                    
+
+def requerimiento3(catalog, category):
+    listaCat = filtroCategory(catalog, category, catalog['videos'])
  
 
 
