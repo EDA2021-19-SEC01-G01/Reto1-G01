@@ -88,10 +88,10 @@ def cmpVideosByLikes(video1, video2):
 
 def cmpVideosByTrend(video1, video2):
     """
-    Devuelve verdadero (True) si los likes de video1 son menores que los del video2
+    Devuelve verdadero (True) si los TrendDays :) de video1 son menores que los del video2
     Args:
-    video1: informacion del primer video que incluye su valor 'likes'
-    video2: informacion del segundo video que incluye su valor 'likes'
+    video1: informacion del primer video que incluye su valor días en Trend
+    video2: informacion del segundo video que incluye su valor días en Trend
     """
     rta=(lt.lastElement(video1))> (lt.lastElement(video2))
     return rta
@@ -202,8 +202,8 @@ def filtroPaiscompleto(catalog, country):
 
     return soloCountry
 
-def ratioLikesDislikes (lista):
-    #Calcula los vídeos con un rating mayor a 10.
+def ratioLikesDislikes (lista, umbral):
+    #Calcula los vídeos con un rating mayor a umbral.
     for j in range(1,lt.size(lista)+1):
         ele=lt.getElement(lista,j)
         vid_id=ele['video_id']
@@ -214,19 +214,19 @@ def ratioLikesDislikes (lista):
             count=0 
             dict_id[vid_id]=[likes,dislikes,count+1]
         else:
-                dict_id[vid_id][0]=likes
-                dict_id[vid_id][1]=dislikes
-                dict_id[vid_id][2]+=1
+            dict_id[vid_id][0]=likes
+            dict_id[vid_id][1]=dislikes
+            dict_id[vid_id][2]+=1
 
     for i in dict_id:
         
         lista_id_top=[]
         if dict_id[i][1]==0 and dict_id[i][0]>0:
-            lista_id_top.append([dict_id[i],ratio,dict_id[i][2]])
+            lista_id_top.append([i,"no tiene dislikes",dict_id[i][2]])
         else:
             ratio=dict_id[i][0]/dict_id[i][1]
-            if ratio>10:
-                lista_id_top.append([dict_id[i],ratio,dict_id[i][2]])
+            if ratio>umbral:
+                lista_id_top.append([i,ratio,dict_id[i][2]])
     return lista_id_top
 
 def printReq2(lista,listatop):                 
@@ -237,29 +237,31 @@ def printReq2(lista,listatop):
         ratio=j[1]
         trendTotal=j[2]
         ids=[]
-        listaPorVideo=lt.newList()
+        listaPorVideo=lt.newList(datastructure="ARRAY_LIST")
         lt.addLast(listaPorVideo,ratio)
         lt.addLast(listaPorVideo,trendTotal)
         for i in range(1,lt.size(lista)+1):
-            ele=lt.getElement(lista,j)
+            ele=lt.getElement(lista,i)
             vid_id=ele['video_id']
-            for crit in criterios:
-                if id == vid_id and (id in ids) == False:
-                    ids.append(id)
+            if id == vid_id and (id in ids) == False:
+                ids.append(id)
+                for crit in criterios:
                     lt.addFirst(listaPorVideo,ele[crit])
+                break
             lt.addLast(lista_final,listaPorVideo)
     return lista_final
 
 def req2 (catalog,country):
-        "Agrupa todas las funciones que desarrollan el requerimiento 1"
+        "Agrupa todas las funciones que desarrollan el requerimiento 2"
         listaPais = filtroPais(catalog,country)
-        listaRating = ratioLikesDislikes(listaPais)
+        listaRating = ratioLikesDislikes(listaPais, 10)
         listaTop=printReq2(listaPais,listaRating)
         listaImprimir =sortVideos3(listaTop, 4)
         return listaImprimir
 
 def requerimiento3(catalog, category):
     listaCat = filtroCategory(catalog, category, catalog['videos'])
+    filtroRatio = ratioLikesDislikes(listaCat, 20)
  
 
 

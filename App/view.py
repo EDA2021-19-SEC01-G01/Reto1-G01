@@ -112,7 +112,10 @@ while True:
     elif int(inputs)==4:
         pais = input("Ingrese el filtro de país: ")
         rta= controller.req2(catalog,pais)
-        print(rta)
+        imprimir = []
+        for ind in range(1,lt.size(rta)+1):
+            imprimir.append(lt.getElement(rta,ind))
+        print(imprimir)
     elif int(inputs) == 5:
         category = input("Ingrese la categoría a consultar: ")
     else:
