@@ -78,3 +78,6 @@ def printCategories(catalog):
 
 def req2(catalog,country):
     return model.req2(catalog,country)
+
+def req3(catalog, category):
+    return model.requerimiento3(catalog,category)

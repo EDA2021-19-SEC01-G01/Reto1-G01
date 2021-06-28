@@ -118,9 +118,22 @@ while True:
             imprimir = []
             for ind in range(1,lt.size(rta)+1):
                imprimir.append(lt.getElement(rta,ind))
+            imprimir = imprimir[:-1]
+            imprimir = imprimir[:2]+[pais]+imprimir[2:]
             print(imprimir)
     elif int(inputs) == 5:
         category = input("Ingrese la categoría a consultar: ")
+        rtaP = controller.req3(catalog,category)
+        rta5 = rtaP[0]
+        if rta5 == "No hay ningún video con ese ratio de likes/dislikes":
+            print(rta5)
+        else:
+            imprimir = []
+            for ind in range(1,lt.size(rta5)+1):
+               imprimir.append(lt.getElement(rta5,ind))
+            imprimir = imprimir[:-1]
+            imprimir = imprimir[:2]+[rtaP[1]]+imprimir[2:]
+            print(imprimir)
     else:
         sys.exit(0)
 sys.exit(0)

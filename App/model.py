@@ -93,7 +93,17 @@ def cmpVideosByTrend(video1, video2):
     video1: informacion del primer video que incluye su valor días en Trend
     video2: informacion del segundo video que incluye su valor días en Trend
     """
-    rta=(lt.lastElement(video1))> (lt.lastElement(video2))
+    days1 = lt.getElement(video1,4)
+    days2 = lt.getElement(video2,4)
+    if days1 == days2:
+        rat1 = lt.getElement(video1,3)
+        rat2 = lt.getElement(video2,3)
+        if type(rat1) != float or type(rat2) != float:
+            rta = (days1 > days2)
+        else:
+            rta = (rat1 > rat2)
+    else:
+        rta = (days1 > days2)
     return rta
 
 
@@ -110,7 +120,7 @@ def comoOrdenar (sub_list, cmpVideosByLikes,ordAlg):
     elif ordAlg == 5:
         return qck.sort(sub_list, cmpVideosByLikes)
 
-def comoOrdenar2 (sub_list, cmpVideosByLikes,ordAlg):
+def comoOrdenar2 (sub_list, cmpVideosByTrend,ordAlg):
     if ordAlg == 1:
         return sa.sort(sub_list, cmpVideosByTrend)
     elif ordAlg == 2:
@@ -136,8 +146,8 @@ def sortVideos2(listaFinal, ordAlg, n):
     subList = lt.subList(sorted_list,1,n)
     return subList
 
-def sortVideos3 (listaFinal,ordAlg):
-    sortedList=comoOrdenar2(listaFinal,cmpVideosByTrend,ordAlg)
+def sortVideos3 (listaFinal,ordAlg,cmp):
+    sortedList=comoOrdenar2(listaFinal,cmp,ordAlg)
     if lt.size(sortedList) == 0:
         return "No hay ningún video con ese ratio de likes/dislikes"
     else:
@@ -155,10 +165,10 @@ def filtroCategory(catalog, category, lista):
         video = lt.getElement(lista,i)
         if video['category_id'] == id:
             lt.addLast(listaFinal, video)
-    return listaFinal
+    return listaFinal,id
 
 
-def filtroPais(catalog, country):
+def filtroPais(catalog, country, ent):
     soloCountry = lt.newList("ARRAY_LIST")
     ids = []
     vid = catalog['videos']
@@ -166,15 +176,19 @@ def filtroPais(catalog, country):
         ele = lt.getElement(vid,i)
         c1 = ele['country']
         id1 = ele['video_id']
-        if c1 == country and (id1 in ids) == False:
-            lt.addLast(soloCountry, ele)
-            ids.append(id1)
+        if c1 == country:
+            if ent == 0 and (id1 in ids) == False:
+                lt.addLast(soloCountry, ele)
+                ids.append(id1)
+            else:
+                lt.addLast(soloCountry, ele)
+                ids.append(id1)
 
     return soloCountry
 
 def req1(catalog, country, category,n):
     "Agrupa todas las funciones que desarrollan el requerimiento 1"
-    listaPais = filtroPais(catalog,country)
+    listaPais = filtroPais(catalog,country,0)
     listaOrdenar = filtroCategory(catalog,category, listaPais)
     listaLista = sortVideos2(listaOrdenar, 4,n)
     listaImprimir = printReq1(listaLista)
@@ -191,80 +205,60 @@ def printReq1(lista):
         lt.addLast(listaFinalFinal,listaPorVideo)
     return listaFinalFinal
 
-def filtroPaiscompleto(catalog, country):
-    soloCountry = lt.newList("ARRAY_LIST")
-    ids = []
-    vid = catalog['videos']
-    for i in range(1,lt.size(vid)+1):
-        ele = lt.getElement(vid,i)
-        c1 = ele['country']
-        id1 = ele['video_id']
-        if c1 == country:
-            lt.addLast(soloCountry, ele)
-            ids.append(id1)
-
-    return soloCountry
-
 def ratioLikesDislikes (lista, umbral):
     #Calcula los vídeos con un rating mayor a umbral.
+    dict_id={}
+    lista_id_top=lt.newList("ARRAY_LIST")
     for j in range(1,lt.size(lista)+1):
         ele=lt.getElement(lista,j)
         vid_id=ele['video_id']
         likes=int(ele["likes"])
         dislikes=int(ele["dislikes"])
-        dict_id={}
+        title = ele['title']
+        channel_title = ele['channel_title']
         if vid_id not in dict_id:
             count=0 
-            dict_id[vid_id]=[likes,dislikes,count+1]
+            dict_id[vid_id]=[likes,dislikes,count+1,title,channel_title]
         else:
             dict_id[vid_id][0]=likes
             dict_id[vid_id][1]=dislikes
             dict_id[vid_id][2]+=1
-
     for i in dict_id:
-        
-        lista_id_top=[]
         if dict_id[i][1]==0 and dict_id[i][0]>0:
-            lista_id_top.append([i,"no tiene dislikes",dict_id[i][2]])
+            xd = lt.newList("ARRAY_LIST")
+            lt.addLast(xd,dict_id[i][3])
+            lt.addLast(xd,dict_id[i][4])
+            lt.addLast(xd,"no tiene dislikes")
+            lt.addLast(xd,dict_id[i][2])
+            lt.addLast(xd,i)
+            lt.addLast(lista_id_top,xd)
+        elif dict_id[i][0]==0:
+            pass
         else:
             ratio=dict_id[i][0]/dict_id[i][1]
             if ratio>umbral:
-                lista_id_top.append([i,ratio,dict_id[i][2]])
+                xd = lt.newList("ARRAY_LIST")
+                lt.addLast(xd,dict_id[i][3])
+                lt.addLast(xd,dict_id[i][4])
+                lt.addLast(xd,ratio)
+                lt.addLast(xd,dict_id[i][2])
+                lt.addLast(xd,i)
+                lt.addLast(lista_id_top,xd)
     return lista_id_top
-
-def printReq2(lista,listatop):                 
-    lista_final=lt.newList(datastructure="ARRAY_LIST")
-    criterios=["country","channel_title","title"]
-    for j in listatop:
-        id=j[0]
-        ratio=j[1]
-        trendTotal=j[2]
-        ids=[]
-        listaPorVideo=lt.newList(datastructure="ARRAY_LIST")
-        lt.addLast(listaPorVideo,ratio)
-        lt.addLast(listaPorVideo,trendTotal)
-        for i in range(1,lt.size(lista)+1):
-            ele=lt.getElement(lista,i)
-            vid_id=ele['video_id']
-            if id == vid_id and (id in ids) == False:
-                ids.append(id)
-                for crit in criterios:
-                    lt.addFirst(listaPorVideo,ele[crit])
-                break
-            lt.addLast(lista_final,listaPorVideo)
-    return lista_final
 
 def req2 (catalog,country):
         "Agrupa todas las funciones que desarrollan el requerimiento 2"
-        listaPais = filtroPais(catalog,country)
+        listaPais = filtroPais(catalog,country,1)
         listaRating = ratioLikesDislikes(listaPais, 10)
-        listaTop=printReq2(listaPais,listaRating)
-        listaImprimir =sortVideos3(listaTop, 4)
+        listaImprimir =sortVideos3(listaRating, 4, cmpVideosByTrend)
         return listaImprimir
 
 def requerimiento3(catalog, category):
     listaCat = filtroCategory(catalog, category, catalog['videos'])
-    filtroRatio = ratioLikesDislikes(listaCat, 20)
+    id = listaCat[1]
+    filtroRatio = ratioLikesDislikes(listaCat[0], 20)
+    listaFinal = sortVideos3(filtroRatio, 4, cmpVideosByTrend)
+    return listaFinal,id
  
 
 
