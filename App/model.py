@@ -168,7 +168,7 @@ def filtroCategory(catalog, category, lista):
     return listaFinal,id
 
 
-def filtroPais(catalog, country, ent):
+def filtroPais(catalog, country):
     soloCountry = lt.newList("ARRAY_LIST")
     ids = []
     vid = catalog['videos']
@@ -177,19 +177,27 @@ def filtroPais(catalog, country, ent):
         c1 = ele['country']
         id1 = ele['video_id']
         if c1 == country:
-            if ent == 0 and (id1 in ids) == False:
-                lt.addLast(soloCountry, ele)
-                ids.append(id1)
-            else:
-                lt.addLast(soloCountry, ele)
-                ids.append(id1)
+            lt.addLast(soloCountry, ele)
 
+    return soloCountry
+
+def filtroPais2(catalog, country):
+    soloCountry = lt.newList("ARRAY_LIST")
+    ids = []
+    vid = catalog['videos']
+    for i in range(1,lt.size(vid)+1):
+        ele = lt.getElement(vid,i)
+        c1 = ele['country']
+        id1 = ele['video_id']
+        if c1 == country and (id1 in ids) == False:
+            lt.addLast(soloCountry, ele)
+            ids.append(id1)
     return soloCountry
 
 def req1(catalog, country, category,n):
     "Agrupa todas las funciones que desarrollan el requerimiento 1"
-    listaPais = filtroPais(catalog,country,0)
-    listaOrdenar = filtroCategory(catalog,category, listaPais)
+    listaPais = filtroPais2(catalog,country)
+    listaOrdenar = (filtroCategory(catalog,category, listaPais))[0]
     listaLista = sortVideos2(listaOrdenar, 4,n)
     listaImprimir = printReq1(listaLista)
     return listaImprimir
@@ -248,7 +256,7 @@ def ratioLikesDislikes (lista, umbral):
 
 def req2 (catalog,country):
         "Agrupa todas las funciones que desarrollan el requerimiento 2"
-        listaPais = filtroPais(catalog,country,1)
+        listaPais = filtroPais(catalog,country)
         listaRating = ratioLikesDislikes(listaPais, 10)
         listaImprimir =sortVideos3(listaRating, 4, cmpVideosByTrend)
         return listaImprimir

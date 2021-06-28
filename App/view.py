@@ -67,7 +67,7 @@ while True:
             print('Seleccione el tipo de representación de la lista: \n1- ArrayList\n2- LinkedList')
             tipoLista = int(input('Ingrese 1 o 2\n'))
             if tipoLista == 1:
-                tipoLista = 'ARRAY_LIST'
+                tipoLista = 'ARRAY_LIST (Seleccionar para los requerimientos del reto.)'
                 correcto = True
             elif tipoLista == 2:
                 tipoLista = 'SINGLE_LINKED'
