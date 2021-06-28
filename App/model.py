@@ -224,7 +224,7 @@ def ratioLikesDislikes (lista):
         if dict_id[i][1]==0 and dict_id[i][0]>0:
             lista_id_top.append([dict_id[i],ratio,dict_id[i][2]])
         else:
-            ratio=dict_id[i]/dict_id[i][1]
+            ratio=dict_id[i][0]/dict_id[i][1]
             if ratio>10:
                 lista_id_top.append([dict_id[i],ratio,dict_id[i][2]])
     return lista_id_top
