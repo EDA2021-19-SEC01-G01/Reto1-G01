@@ -106,6 +106,8 @@ def cmpVideosByTrend(video1, video2):
         rta = (days1 > days2)
     return rta
 
+def cmpR4(v1,v2):
+    return (int(v1['comment_count']) > int(v2['comment_count']))
 
 # Funciones de ordenamiento
 def comoOrdenar (sub_list, cmpVideosByLikes,ordAlg):
@@ -132,6 +134,18 @@ def comoOrdenar2 (sub_list, cmpVideosByTrend,ordAlg):
     elif ordAlg == 5:
         return qck.sort(sub_list, cmpVideosByTrend)
 
+def comoOrdenar3(sub_list, cmpR4,ordAlg):
+    if ordAlg == 1:
+        return sa.sort(sub_list, cmpR4)
+    elif ordAlg == 2:
+        return ins.sort(sub_list, cmpR4)
+    elif ordAlg == 3:
+        return sls.sort(sub_list, cmpR4)
+    elif ordAlg == 4:
+        return mrg.sort(sub_list, cmpR4)
+    elif ordAlg == 5:
+        return qck.sort(sub_list, cmpR4)
+
 def sortVideos(catalog, size, ordAlg):
     sub_list = lt.subList(catalog['videos'], 1, size)
     sub_list = sub_list.copy()
@@ -154,6 +168,11 @@ def sortVideos3 (listaFinal,ordAlg,cmp):
         top_trend=lt.firstElement(sortedList)
         return top_trend
 
+def sv4(lista,oa,cmp):
+    sortedList=comoOrdenar3(lista,cmp,oa)
+    rta= lt.firstElement(sortedList)
+    return rta
+
 def filtroCategory(catalog, category, lista):
     categorias = catalog['categorias']
     listaFinal = lt.newList("ARRAY_LIST")
@@ -165,7 +184,7 @@ def filtroCategory(catalog, category, lista):
         video = lt.getElement(lista,i)
         if video['category_id'] == id:
             lt.addLast(listaFinal, video)
-    return listaFinal,id
+    return [listaFinal,id]
 
 
 def filtroPais(catalog, country):
@@ -185,8 +204,9 @@ def filtroPais2(catalog, country):
     soloCountry = lt.newList("ARRAY_LIST")
     ids = []
     vid = catalog['videos']
-    for i in range(1,lt.size(vid)+1):
-        ele = lt.getElement(vid,i)
+    tamano = lt.size(vid)
+    for i in range(0,tamano):
+        ele = lt.getElement(vid,tamano-i)
         c1 = ele['country']
         id1 = ele['video_id']
         if c1 == country and (id1 in ids) == False:
@@ -199,12 +219,11 @@ def req1(catalog, country, category,n):
     listaPais = filtroPais2(catalog,country)
     listaOrdenar = (filtroCategory(catalog,category, listaPais))[0]
     listaLista = sortVideos2(listaOrdenar, 4,n)
-    listaImprimir = printReq1(listaLista)
+    listaImprimir = printReq1(listaLista, ['trending_date','title','channel_title','publish_time','views','likes','dislikes'])
     return listaImprimir
 
-def printReq1(lista):
+def printReq1(lista, criterios):
     listaFinalFinal = lt.newList('ARRAY_LIST')
-    criterios = ['trending_date','title','channel_title','publish_time','views','likes','dislikes']
     for j in range(1,lt.size(lista)+1):
         listaPorVideo = lt.newList('ARRAY_LIST')
         for crit in criterios:
@@ -268,10 +287,44 @@ def requerimiento3(catalog, category):
     listaFinal = sortVideos3(filtroRatio, 4, cmpVideosByTrend)
     return listaFinal,id
  
-
-
+def req4(c,p,n,t):
+    clas = lt.newList("ARRAY_LIST")
+    ids = []
+    vid = c['videos']
+    dicc= {}
+    for i in range(1,lt.size(vid)+1):
+        ele = lt.getElement(vid,i)
+        c1 = ele['country']
+        id = ele['video_id']
+        tag = ele["tags"]
+        a1,a2,a3= (c1==p),(id not in ids), (t in tag)
+        if a1 and a2 and a3 :
+            ids.append(id)
+            e= lt.newList("ARRAY_LIST")
+            dicc[id]= e
+            lt.addLast(dicc[id],ele)
+        elif a1 and a3:
+            lt.addLast(dicc[id],ele)
         
-            
+    for i in dicc.keys():
+        if lt.size(dicc[i]) > 0:
+            d= sv4(dicc[i],4,cmpR4)
+            lt.addLast(clas,d)
+        else:
+            print(dicc[i])
+            lt.addLast(clas,lt.firstElement(dicc[i]))
+    
+    l_final= comoOrdenar3(clas,cmpR4,4)
+    rta= []
+    for i in range(1,n+1):
+        rta.append(lt.getElement(l_final,i))
+    rta2 = lt.newList('ARRAY_LIST')
+    for diccionario in rta:
+        lt.addLast(rta2,diccionario)
 
-
-
+    rtaF = printReq1(rta2,['title', 'channel_title','publish_time','views','likes','dislikes','comment_count','tags'])
+    finaliza = []
+    for indice in range(1,lt.size(rtaF)+1):
+        dato = lt.getElement(rtaF,indice)
+        finaliza.append(dato['elements'])
+    return finaliza

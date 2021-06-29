@@ -43,6 +43,7 @@ def printMenu():
     print("3- Requerimiento 1")
     print("4- Requerimiento 2")
     print("5- Requerimiento 3")
+    print("6- Requerimiento 4")
     print("0- Salir")
 
 catalog = None
@@ -64,10 +65,10 @@ while True:
     if int(inputs) == 1:
         correcto = False
         while correcto == False:
-            print('Seleccione el tipo de representación de la lista: \n1- ArrayList\n2- LinkedList')
+            print('Seleccione el tipo de representación de la lista: \n1- ArrayList (Seleccionar para los requerimientos del reto).\n2- LinkedList')
             tipoLista = int(input('Ingrese 1 o 2\n'))
             if tipoLista == 1:
-                tipoLista = 'ARRAY_LIST (Seleccionar para los requerimientos del reto.)'
+                tipoLista = 'ARRAY_LIST'
                 correcto = True
             elif tipoLista == 2:
                 tipoLista = 'SINGLE_LINKED'
@@ -134,6 +135,12 @@ while True:
             imprimir = imprimir[:-1]
             imprimir = imprimir[:2]+[rtaP[1]]+imprimir[2:]
             print(imprimir)
+    elif int(inputs) == 6:
+        pais = input("Ingrese el filtro por país: ")
+        n = int(input("Ingrese el número de videos a listar: "))
+        tag = input("Ingrese la etiqueta del video: ")
+        rtas = controller.req4(catalog,pais,n,tag)
+        print(rtas)
     else:
         sys.exit(0)
 sys.exit(0)

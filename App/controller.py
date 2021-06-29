@@ -81,3 +81,6 @@ def req2(catalog,country):
 
 def req3(catalog, category):
     return model.requerimiento3(catalog,category)
+
+def req4(catalog,pais,n,tag):
+    return model.req4(catalog,pais,n,tag)
