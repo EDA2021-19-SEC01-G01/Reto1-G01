@@ -24,6 +24,8 @@ import config as cf
 from DISClib.ADT import list as lt
 import model
 import csv
+import time
+import tracemalloc
 
 
 """
@@ -71,16 +73,116 @@ def showCat(catalog):
     return rta
 
 def req1(catalog, country, category,n):
-    return model.req1(catalog, country, category,n)
+    delta_time = -1.0
+    delta_memory = -1.0
+
+    tracemalloc.start()
+    start_time = getTime()
+    start_memory = getMemory()
+
+    retorno = model.req1(catalog, country, category,n)
+
+    stop_memory = getMemory()
+    stop_time = getTime()
+    tracemalloc.stop()
+
+    delta_time = stop_time - start_time
+    delta_memory = deltaMemory(start_memory, stop_memory)
+
+    print (delta_time, delta_memory)
+    return retorno
 
 def printCategories(catalog):
     return model.printCategories(catalog)
 
 def req2(catalog,country):
-    return model.req2(catalog,country)
+    delta_time = -1.0
+    delta_memory = -1.0
+
+    tracemalloc.start()
+    start_time = getTime()
+    start_memory = getMemory()
+
+    retorno = model.req2(catalog,country)
+
+    stop_memory = getMemory()
+    stop_time = getTime()
+    tracemalloc.stop()
+
+    delta_time = stop_time - start_time
+    delta_memory = deltaMemory(start_memory, stop_memory)
+
+    print (delta_time, delta_memory)
+    return retorno
 
 def req3(catalog, category):
-    return model.requerimiento3(catalog,category)
+    delta_time = -1.0
+    delta_memory = -1.0
+
+    tracemalloc.start()
+    start_time = getTime()
+    start_memory = getMemory()
+
+    retorno = model.requerimiento3(catalog,category)
+
+    stop_memory = getMemory()
+    stop_time = getTime()
+    tracemalloc.stop()
+
+    delta_time = stop_time - start_time
+    delta_memory = deltaMemory(start_memory, stop_memory)
+
+    print (delta_time, delta_memory)
+    return retorno
+
 
 def req4(catalog,pais,n,tag):
-    return model.req4(catalog,pais,n,tag)
+    delta_time = -1.0
+    delta_memory = -1.0
+
+    tracemalloc.start()
+    start_time = getTime()
+    start_memory = getMemory()
+
+    retorno = model.req4(catalog,pais,n,tag)
+
+    stop_memory = getMemory()
+    stop_time = getTime()
+    tracemalloc.stop()
+
+    delta_time = stop_time - start_time
+    delta_memory = deltaMemory(start_memory, stop_memory)
+
+    print (delta_time, delta_memory)
+    return retorno
+
+# Funciones para medir tiempo y memoria
+
+def getTime():
+    """
+    devuelve el instante tiempo de procesamiento en milisegundos
+    """
+    return float(time.perf_counter()*1000)
+
+
+def getMemory():
+    """
+    toma una muestra de la memoria alocada en instante de tiempo
+    """
+    return tracemalloc.take_snapshot()
+
+
+def deltaMemory(start_memory, stop_memory):
+    """
+    calcula la diferencia en memoria alocada del programa entre dos
+    instantes de tiempo y devuelve el resultado en bytes (ej.: 2100.0 B)
+    """
+    memory_diff = stop_memory.compare_to(start_memory, "filename")
+    delta_memory = 0.0
+
+    # suma de las diferencias en uso de memoria
+    for stat in memory_diff:
+        delta_memory = delta_memory + stat.size_diff
+    # de Byte -> kByte
+    delta_memory = delta_memory/1024.0
+    return delta_memory
